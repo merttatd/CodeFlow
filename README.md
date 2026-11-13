@@ -12,11 +12,13 @@ CodeFlow, kaynak kod projelerini tarayıcıda analiz ederek dosyalar, fonksiyonl
 2. Windows üzerinde **Baslat.bat** dosyasına çift tıklayın. Alternatif olarak **index.html** dosyasını Chrome veya Edge ile açın.
 3. **Proje klasörü aç** düğmesinden incelemek istediğiniz proje klasörünü seçin.
 4. **Dosya akışı**, **Fonksiyonlar** veya **Kütüphaneler** görünümüne geçin.
-5. Bir öğeye tıklayarak kaynak kodunu ve ilişkilerini inceleyin.
-
-Kendi projenizi seçmeden denemek için **Örnek proje aç** düğmesini kullanabilirsiniz. Uygulama, küçük bir Python sipariş servisi örneği içerir.
+5. Bir öğeye tıklayarak uygulama içinde o öğeye özel bir harita sekmesi açın; kaynak kodunu detay panelinden inceleyin.
+6. **Yön: Soldan sağa** düğmesine basarak şemayı yukarıdan aşağı görüntüleyin. Aynı düğmeyle yatay görünüme dönebilirsiniz.
+7. **Genel harita** sekmesine dönerek projeyi incelemeye devam edin; ihtiyacınız kalmayan öğe sekmelerini **×** ile kapatın.
 
 Uygulamayı kullanmak için Node.js, Python, paket kurulumu veya yerel sunucu gerekmez. Tarayıcının klasör seçme ekranında “yükle” ifadesi görünse bile dosyalar yalnızca tarayıcı belleğinde okunur.
+
+Uygulama boş bir çalışma alanıyla açılır; gömülü örnek proje veya kayıtlı analiz içermez. İncelemek istediğiniz projeyi kendiniz seçersiniz.
 
 ## Özellikler
 
@@ -43,14 +45,14 @@ Bir fonksiyonu seçtiğinizde detay panelinde şunları görebilirsiniz:
 - Dönüş ifadeleri ve tanınan arrow fonksiyonlarda örtük dönüşler.
 - Koşullar, döngüler, hata yönetimi ve asenkron beklemeler gibi saptanan adımlar.
 
-**Çağrı zincirini şemada göster**, seçilen fonksiyonu, doğrudan çağıranlarını ve ulaşılabilen çağrı hedeflerini haritada gösterir. Haritadaki öğe sınırı bu görünümde de geçerlidir.
+**Çağrı zincirini şemada göster**, genel haritaya geçerek seçilen fonksiyonu, doğrudan çağıranlarını ve ulaşılabilen çağrı hedeflerini gösterir. Öğeye özel sekme yalnızca doğrudan ilişkileri gösterirken bu düğme daha uzun çağrı zincirini incelemeyi sağlar. Haritadaki öğe sınırı bu görünümde de geçerlidir.
 
 Aynı hedefe yapılan çağrılar ayrı çağrı noktaları olarak tutulur. Örneğin bir bağlantıdaki **3 çağrı** etiketi, kodda bulunan üç çağrı noktasını ifade eder; fonksiyonun çalışma sırasında kaç kez çalıştığını göstermez.
 
 ### Geniş harita çalışma alanı
 
 - Düz koyu arka plan ve açılıp kapatılabilen yan paneller.
-- İlişkili kartları yakın sıralayan, döngüleri hesaba katan sütun yerleşimi.
+- Soldan sağa veya yukarıdan aşağı seçilebilen, döngüleri hesaba katan yerleşim.
 - Kartların çevresindeki boşluklardan geçen dik açılı oklar.
 - Seçilen öğenin doğrudan ilişkilerini vurgulama, diğer ilişkileri soluklaştırma.
 - Ok üzerine gelindiğinde, klavyeyle odaklanıldığında veya tıklandığında çağrı sayısını gösterme.
@@ -58,9 +60,32 @@ Aynı hedefe yapılan çağrılar ayrı çağrı noktaları olarak tutulur. Örn
 
 Yoğun grafiklerde oklar birbirini kesebilir. Dosya filtresi, arama veya bir fonksiyona odaklanma ile görünümü daraltabilirsiniz.
 
+### Öğeye özel harita sekmeleri
+
+Haritadaki bir kutuya tıklamak uygulama içinde ayrı bir sekme açar. Bu sekmede seçilen öğe ve doğrudan ilişkili öğeler gösterilir. Fonksiyonlarda doğrudan çağıranlar ve çağrılanlar; dosyalarda bağlı dosyalar, bağımlılıklar ve içerilen fonksiyonlar yer alır. Dolaylı çağrı zinciri bu görünümde otomatik genişletilmez.
+
+- **Genel harita** sekmesi proje görünümüne geri döner.
+- İlişkili bir kutuya tıklamak onun sekmesini açar; zaten açıksa mevcut sekmesine geçer.
+- Her sekme arama, yön, yakınlaştırma ve kaydırma konumunu korur.
+- Sekmenin yanındaki **×** düğmesi sekmeyi kapatır.
+- **Yön: Soldan sağa / Yukarıdan aşağı** düğmesi aktif haritanın yönünü değiştirir. Kart yazıları yatay ve okunabilir kalır.
+- Dosya akışı / Fonksiyonlar / Kütüphaneler düğmeleri genel haritaya geçer. Yeni proje açılınca eski öğe sekmeleri temizlenir.
+
+Bunlar tarayıcı sekmeleri değil, uygulama içi harita sekmeleridir. Haritadaki 150 öğe sınırı bu sekmelerde de geçerlidir. Arama seçilen ana öğeyi görünür tutar; komşularını filtreler.
+
+Örneğin `checkout → create_order → save_order` ilişkisi varsa, `create_order` sekmesinde üç fonksiyon da görünür: biri doğrudan çağıranı, diğeri doğrudan çağırdığı fonksiyondur. `checkout` sekmesinde ise yalnızca `checkout` ve `create_order` görünür; başka bir doğrudan bağlantı yoksa `save_order` bu sekmeye dahil edilmez.
+
+### Yatay ve dikey şema
+
+**Yön** düğmesi yalnızca aktif sekmenin düzenini değiştirir ve şemayı görünür alana sığdırır. Yatay düzende oklar kartların sağından çıkarak hedefin soluna; dikey düzende kartların altından çıkarak hedefin üstüne bağlanır. Döngü ve geri dönüş bağlantıları kartların dışından dolaşır. Kartların metni her iki düzende de yatay kalır.
+
+Bir öğe sekmesini dikey, genel haritayı yatay kullanabilirsiniz. Sekmeler arasında geçiş yaptığınızda seçtiğiniz yön, yakınlaştırma ve kaydırma konumu geri yüklenir. Bu durum yalnızca açık oturumda korunur; sayfa yenilenince sıfırlanır.
+
 ### Arama ve dışa aktarım
 
 Dosya listesini ve şemayı ayrı ayrı arayabilirsiniz. Soldan bir dosya seçmek haritayı o dosyanın ilişkilerine daraltır. **Tümü**, dosya ve şema filtrelerini ve fonksiyon odağını temizler.
+
+Öğeye özel bir sekmede **Tümü** kullanmak o sekmenin ilişkili öğe kapsamını değiştirmez. Projenin tamamına dönmek için **Genel harita** sekmesini seçin. JSON dışa aktarımı aktif sekmeyle sınırlı değildir; tüm analiz modelini içerir.
 
 **Analizi dışa aktar**, analiz modelini JSON dosyası olarak indirir. Bu dosya düğümleri, ilişkileri, fonksiyon detaylarını ve **kaynak kodunu da içerir**. Mevcut sürümde dışa aktarılan JSON dosyasını yeniden içe aktarma özelliği yoktur.
 
@@ -75,7 +100,10 @@ Dosya listesini ve şemayı ayrı ayrı arayabilirsiniz. Soldan bir dosya seçme
 | ＋ / − | Yakınlaştırır veya uzaklaştırır |
 | Ctrl + fare tekerleği | İşaretçinin bulunduğu noktayı esas alarak ölçeği değiştirir |
 | Boş alanı sürükleme | Harita üzerinde gezinir |
-| Öğeye tıklama | Detayları açar ve doğrudan bağlantıları vurgular |
+| Öğeye tıklama | Öğeye özel sekme açar; doğrudan ilişkileri ve detayları gösterir |
+| Genel harita | Proje görünümüne ve o görünümün kaydedilmiş konumuna döner |
+| Sekmedeki × | İlgili öğe sekmesini kapatır |
+| Yön: Soldan sağa / Yukarıdan aşağı | Aktif sekmenin şema yönünü değiştirir ve sığdırır |
 | Boş alana tıklama | Seçim vurgusunu kaldırır |
 | Tümü | Dosya / şema filtresini ve fonksiyon odağını temizler |
 
@@ -145,6 +173,8 @@ vendor        .next
 
 ~~~text
 CodeFlow/
+├── .editorconfig              # Ortak dosya biçimi ayarları
+├── .gitignore                 # Yerel dosyalar ve analiz çıktıları için kurallar
 ├── index.html                 # Uygulama arayüzü
 ├── style.css                  # Genel koyu tema
 ├── graph.css                  # Harita alanı ve etkileşim stilleri
@@ -154,9 +184,11 @@ CodeFlow/
 ├── function-details.js        # Fonksiyon detay paneli
 ├── graph-layout.js            # Kart yerleşimi ve ok güzergâhları
 ├── graph-view.js              # SVG çizimi, seçim ve gezinme kontrolleri
+├── graph-tabs.js              # Öğeye özel sekmeler ve sekme durumu
 ├── analyzer.test.js           # Temel analiz testleri
 ├── analysis-details.test.js   # Ayrıntılı analiz testleri
-├── graph-layout.test.js       # Yerleşim ve ok çakışması testleri
+├── graph-layout.test.js       # Yatay / dikey yerleşim ve ok çakışması testleri
+├── graph-tabs.test.js         # Sekme geçişleri ve durum koruma testleri
 ├── Baslat.bat                 # Windows başlatıcısı
 └── README.md
 ~~~
@@ -173,9 +205,10 @@ Testleri çalıştırmak için Node.js gerekir. Proje klasöründe:
 node analyzer.test.js
 node analysis-details.test.js
 node graph-layout.test.js
+node graph-tabs.test.js
 ~~~
 
-Testler; Python ve TypeScript import ilişkilerini, fonksiyon sınırlarını, çağrı noktalarını, argümanları, kaynak açıklamalarını, özyinelemeyi ve kartların içinden geçmeyen dik açılı ok güzergâhlarını kapsar. Bu kontroller tam tarayıcı veya tüm dil sözdizimleri için uyumluluk testi değildir.
+Testler; Python ve TypeScript import ilişkilerini, fonksiyon sınırlarını, çağrı noktalarını, argümanları, kaynak açıklamalarını ve özyinelemeyi kapsar. Yerleşim testleri yatay ve dikey düzende kart çakışmalarını ve okların kartların içinden geçmemesini kontrol eder. Sekme testleri doğrudan komşuların seçilmesini, açık sekmenin yeniden kullanılmasını, yön / yakınlaştırma / kaydırma durumunun korunmasını, sekme kapatmayı ve yeni projede sıfırlamayı doğrular. Sekme kontrolleri basit bir DOM taklidi kullanır; bunlar tam tarayıcı veya tüm dil sözdizimleri için uyumluluk testi değildir.
 
 ## Katkıda bulunma
 
